@@ -4,15 +4,12 @@ open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
 open System
-[<AutoOpen>]
-module Nullable =
-    let (!) = Nullable.op_Implicit
 
 type Sprite =
     {position: Vector2; speed: float32; texture: Texture2D; size: Point; offset: Point}
     member this.Draw(spriteBatch: SpriteBatch) =
         let sourceRect = Rectangle(this.offset, this.size)
-        spriteBatch.Draw(this.texture, this.position, !sourceRect, Color.White)
+        spriteBatch.Draw(this.texture, this.position, Nullable.op_Implicit sourceRect, Color.White)
 
 type Game1 () as this =
     inherit Game()
