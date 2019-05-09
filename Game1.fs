@@ -48,7 +48,6 @@ type Game1 () as this =
                     texture = playerSpriteSheet
                     size = Point(64, 64)
                     offset = Point(0,128) }
-        // TODO: use this.Content to load your game content here
 
     override this.Update (gameTime) =
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back = ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
