@@ -38,8 +38,6 @@ type Game1 () as this =
         this.IsMouseVisible <- true
 
     override this.Initialize() =
-        // TODO: Add your initialization logic here
-        
         base.Initialize()
 
     override this.LoadContent() =
@@ -54,13 +52,12 @@ type Game1 () as this =
 
     override this.Update (gameTime) =
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back = ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-        then this.Exit();
+        then this.Exit()
 
-        // TODO: Add your update logic here
         let movementVector =
             let motion = getMovementVector(Keyboard.GetState())
             if motion <> Vector2.Zero then motion.Normalize()
-            motion  
+            motion
             
         let newPosition =
             let newPos =
@@ -77,7 +74,7 @@ type Game1 () as this =
             
             Vector2.Clamp(newPos, minClamp, maxClamp)
 
-        player <- {player with position = newPosition }            
+        player <- {player with position = newPosition }
         base.Update(gameTime)
 
     override this.Draw (gameTime) =
@@ -88,4 +85,3 @@ type Game1 () as this =
         player.Draw(spriteBatch)
         spriteBatch.End()
         base.Draw(gameTime)
-
