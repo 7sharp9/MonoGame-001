@@ -57,3 +57,32 @@ Temporary Items
 !.vscode/extensions.json
 
 # End of https://www.gitignore.io/api/code
+
+# Created by https://www.gitignore.io/api/fsharp
+# Edit at https://www.gitignore.io/?templates=fsharp
+
+### fsharp ###
+lib/debug
+lib/release
+Debug
+*.suo
+*.user
+obj
+bin
+/build/
+*.exe
+!.paket/paket.bootstrapper.exe
+
+# End of https://www.gitignore.io/api/fsharp
+
+# Created by https://www.gitignore.io/api/code
+# Edit at https://www.gitignore.io/?templates=code
+
+### Code ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# End of https://www.gitignore.io/api/code
