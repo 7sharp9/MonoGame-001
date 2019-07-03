@@ -1,28 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Winexe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game1.fs" />
-    <Compile Include="ElmishProgram.fs" />
-    <Compile Include="Program.fs" />
+    <ProjectReference Include="src/Core/Core.fsproj">
+      <Name>Core.fsproj</Name>
+    </ProjectReference>
   </ItemGroup>
-
   <ItemGroup>
-    <None Include="Content\Content.mgcb" />
+    <Compile Include="Game1.fs" />
+    <Compile Include="Program.fs" />
+    <None Include="Content/Content.mgcb" />
   </ItemGroup>
 
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" Visible="false" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
-    <PackageReference Include="MonoGame.Extended" Version="1.1.0" />
-    <PackageReference Include="MonoGame.Extended.Input" Version="1.1.0" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7" />
-    <PackageReference Include="Nez" Version="0.9.2" />
-    <PackageReference Include="NSubsys" Version="0.7.0-build20180604-0047" />
-  </ItemGroup>
+  <Import Project=".paket\Paket.Restore.targets" />
 </Project>

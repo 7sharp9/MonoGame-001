@@ -1,0 +1,15 @@
+source https://api.nuget.org/v3/index.json
+
+nuget FSharp.Core
+nuget MonoGame
+nuget MonoGame.Content.Builder 3.7.0.9
+nuget MonoGame.Extended 1.1.0
+nuget MonoGame.Extended.Input 1.1.0
+nuget MonoGame.Framework.DesktopGL.Core 3.7.0.7
+nuget Nez 0.9.2
+nuget NSubsys 0.7.0-build20180604-0047 prerelease
+nuget Newtonsoft.Json 11.0.2
+nuget FSharp.Compiler.Service 25.0.1
+
+github fsprojects/FSharp.Compiler.PortaCode:master src/CodeModel.fs
+github fsprojects/FSharp.Compiler.PortaCode:master src/Interpreter.fs
