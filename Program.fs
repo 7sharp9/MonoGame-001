@@ -4,7 +4,7 @@ open System
 open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
-open MonoGameTest.Core
+open ElmishCore
 
 module App =
 
@@ -26,7 +26,7 @@ module App =
 
     let initPlayer (game: Game) =
         let playerSpriteSheet = game.Content.Load<Texture2D>("skeleton")
-        {   position = Vector2.Zero
+        {   position = game.Window.ClientBounds.Center.ToVector2()
             speed= 166.f
             texture = playerSpriteSheet
             size = Point(64, 64)
@@ -38,8 +38,13 @@ module App =
             Game = game
             SpriteBatch = new SpriteBatch(game.GraphicsDevice) }
 
-    let init game () = 
-        initModel game, Cmd.none
+    let sub (game: ElmishGame) dispatch =
+        let msgSender msg = msg |> Tick |> dispatch
+        game.updateFunction <- Some msgSender
+
+    let init game =
+        Diagnostics.Debug.WriteLine "init called"
+        initModel game, Cmd.ofSub (sub game)
 
     let (|KeyDown|_|) k (state: KeyboardState) =
         if state.IsKeyDown k then Some() else None
@@ -82,36 +87,43 @@ module App =
             { model with
                 Player = {model.Player with position = newPosition}}, Cmd.none
 
-    let view (model: Model) dispatch =
-        model.Game.GraphicsDevice.Clear Color.CornflowerBlue
+    let view (model: Model) (dispatch: Msg -> unit ) =
+        model.Game.GraphicsDevice.Clear Color.SkyBlue
         model.SpriteBatch.Begin()
         model.Player.Draw model.SpriteBatch
         model.SpriteBatch.End()
+        
+
+    let program = Program.mkProgram init update view
 
 
 type GameApp () as this = 
     inherit ElmishGame ()
     do  this.Content.RootDirectory <- "Content"
         this.IsMouseVisible <- true
+        this.TargetElapsedTime <- TimeSpan.FromSeconds(1.0 / 200.0)  //6fps
 
-    let mapEventSubscription initial =
-        let sub dispatch =
-            let msgSender msg = msg |> App.Tick |> dispatch
-            this.UpdateEvent.Add(msgSender)
-        Cmd.ofSub sub
-
-    //example of subscriptions
-    // let subscription model =
-    //     Cmd.batch [ Cmd.map HourMsg (Hour.subscribe model.hours)
-    //                 Cmd.map SecondMsg (Second.subscribe model.seconds) ]
+    // let mapEventSubscription initial =
+    //     let sub dispatch =
+    //         let msgSender msg = msg |> App.Tick |> dispatch
+    //         this.UpdateEvent.Add(msgSender)
+    //     Cmd.ofSub sub
     
-    let runner =
-            Program.mkProgram (App.init this) App.update App.view
-            |> Program.withSubscription mapEventSubscription
-            |> Program.withConsoleTrace
+    override this.Initialize() =
+
+        let runner =
+            App.program
+            //|> Program.withSubscription mapEventSubscription
+            //|> Program.withConsoleTrace
             |> Program.runWithDynamicView this
 
+    #if DEBUG
+        do runner.EnableLiveUpdate()
+    #endif
+    
+
 module Program =
+    [<STAThread>]
     [<EntryPoint>]
     let main argv =
         use game = new GameApp()
